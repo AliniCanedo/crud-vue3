@@ -13,7 +13,8 @@
       </template>
 
       <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
+        <q-td :props="props" class="q-gutter-sm">
+          <q-btn icon="edit" color="info" dense size="sm" @click="handleEditPost(props.row.id)" />
           <q-btn icon="delete" color="negative" dense size="sm" @click="handleDeletePost(props.row.id)" />
         </q-td>
       </template>
@@ -25,6 +26,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import postsService from 'src/services/posts'
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'IndexPage',
@@ -39,6 +41,7 @@ export default defineComponent({
     ]
 
     const $q = useQuasar()
+    const router = useRouter()
 
     onMounted(() => {
       getPosts()
@@ -70,10 +73,15 @@ export default defineComponent({
       }
     }
 
+    const handleEditPost = (id) => {
+      router.push({ name: 'formPost', params: { id } })
+    }
+
     return {
       posts,
       columns,
-      handleDeletePost
+      handleDeletePost,
+      handleEditPost
     }
   }
 })
